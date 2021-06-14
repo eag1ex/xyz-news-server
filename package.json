@@ -1,0 +1,45 @@
+{
+  "name": "xyz-news-server",
+  "version": "1.0.1",
+  "description": "interpretation of HackerNews/api feed",
+  "main": "index.js",
+  "type": "commonjs",
+  "types": "./types",
+  "typings": "./types",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard eslint-plugin-promise@latest --save-dev",
+    "lint": "./node_modules/.bin/eslint  --ext .js libs",
+    "lint:fix": "./node_modules/.bin/eslint --fix --ext .js libs"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base-64": "^1.0.0",
+    "body-parser": "^1.19.0",
+    "buffer": "^6.0.3",
+    "cors": "^2.8.5",
+    "ejs": "^3.1.6",
+    "escape-html": "^1.0.3",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "marked": "^2.0.3",
+    "morgan": "^1.10.0",
+    "object-assign": "^4.1.1",
+    "q": "^1.5.1",
+    "query-string": "^7.0.0",
+    "request": "^2.88.2",
+    "x-utils-es": "^2.2.2"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "bash-color": "0.0.4",
+    "eslint": "^7.26.0",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-standard": "^5.0.0"
+  }
+}
