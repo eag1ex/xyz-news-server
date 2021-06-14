@@ -4,8 +4,8 @@ import JWT  from 'jsonwebtoken'
 declare namespace types {
 
     // example: https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty
-    type APIQuery = "topstories" | "beststories" | "newstories" | "user"
-
+    declare type APIQuery = "topstories" | "beststories" | "newstories" | "user"
+    declare type APIstoryTypes = "topstories" | "beststories" | "newstories"
 
     declare interface APIuser{
         about:string;

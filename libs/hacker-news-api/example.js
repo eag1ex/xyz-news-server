@@ -6,6 +6,7 @@
  * @typedef {import("../../types").types.APIuser} APIuser
  */
 
+const { onerror,log } = require("x-utils-es/umd")
 const HackerNewsAPI = require('.')
 const hn = new HackerNewsAPI()
 
@@ -14,14 +15,25 @@ const hn = new HackerNewsAPI()
 // hn.fetch({type:'user','value':'sizzle'})
 // hn.fetch({type:'story','value':'beststories'})
 
-hn.fetch({type:'user','value':'sizzle'}).then(n=>{
+function fetch() {
+    hn.fetch({ type: 'user', value: 'sizzle' })
+        .then((n) => {
+            /**
+             * @type {APIuser}
+             */
+            let item = n
 
-    /**
-     * @type {APIuser}
-     */
-    let item = n
-    
-    console.log(item)
-}).catch(err=>{
-    console.error(err)
-})
+           log(item)
+        })
+        .catch((err) => {
+            onerror(err)
+        })
+}; //fetch()
+
+function storiesPaged(){
+    hn.storiesPaged({paged:14,value:'beststories',perPage:15}).then(n=>{
+        log(n)
+    }).catch(err=>{
+        onerror(err)
+    })
+}; storiesPaged()
