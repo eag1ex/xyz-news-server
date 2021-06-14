@@ -7,8 +7,7 @@
 const config = require('../config')
 const { validate, getToken, JWTverifyAccess } = require('./utils')
 const ENV = config.env // development,production
-// const dataInsert = require('../../data.inserts')
-// const DBControllers = require('../mongoDB/db.controllers')
+
 class ServerAuth {
 
     /**
@@ -20,41 +19,9 @@ class ServerAuth {
         this.debug = debug
         this.expressApp = expressApp
 
-        // adds intellisense support
-        // this.dbc = undefined
-        // if (dbc instanceof DBControllers) {
-        //     // all good
-        //     this.dbc = dbc
-        // } else {
-        //     throw ('db is not of DBControllers')
-        // }
+
     }
 
-    /**
-     * purge and repopulated new demo db on every login
-     */
-    // async resetDB() {
-    //     const defaultUser = {
-    //         user: {
-    //             name: config.mongo.defaultUser
-    //         }
-    //     }
-    //     try {
-    //         let purged = await this.dbc.db.purgeDB()
-    //         attention('[purged]', purged)
-    //         await delay(500)
-    //         // return
-
-    //         // ------- NOTE populate our data with data.inserts.js
-    //         let populatedBucketList = await this.dbc.db.bucketCollectionInsert(dataInsert, defaultUser)
-    //         attention('[bucketCollectionInsert]')
-    //         await delay(300)
-    //         return true
-    //     } catch (err) {
-    //         onerror('[resetDB]', err)
-    //     }
-    //     return false
-    // }
 
     /**
      * allowed access without credentials
@@ -126,7 +93,7 @@ class ServerAuth {
     async authCheck(req, res, next) {
         res.header('Access-Control-Allow-Origin', '*')
         res.header('Access-Control-Allow-Methods', 'GET')
-        res.header('Access-Control-Allow-Methods', 'POST')
+       // res.header('Access-Control-Allow-Methods', 'POST')
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, token-expiry')
         res.header('Referrer-Policy', 'no-referrer') // for google external assets

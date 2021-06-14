@@ -1,5 +1,5 @@
-import { Router } from "express"
-import {Express} from "express"
+
+import {Express, Request, Response,Router} from "express"
 import JWT  from 'jsonwebtoken'
 declare namespace types {
 
@@ -42,13 +42,13 @@ declare namespace types {
     }
 
 
-    type Tenv =  'development' | 'production'
+    type Tenv =  'development' | 'production' | string
     declare interface IRouter extends Router {}
     declare interface IJWT extends JWT{}
-    declare type TReq  = Request
-    declare type TResp = Response
+    declare type TReq  = Request<ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>
+    declare type TResp = Response<any, Record<string, any>, number>
     declare type TExpress = Express
-
+    
     declare interface IExpressHandler{
         (req:TReq,res:TResp):void
     }

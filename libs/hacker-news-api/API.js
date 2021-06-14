@@ -99,7 +99,9 @@ class HackerNewsAPI {
                 onerror(body || msg)
                 return defer.reject(msg)
             } else {
-                defer.resolve(body)
+                if(isFalsy(body)) defer.reject('No results found')
+                else defer.resolve(body)
+               
             }
         })
 

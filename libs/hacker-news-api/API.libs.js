@@ -15,20 +15,20 @@ const HackerNewsAPI = require('./API')
  * Extend Hacker new api
  */
 class Libs extends HackerNewsAPI {
-    //pagedLimit = 10
+
     perPageLimit = 15
     constructor() {
         super()
     }
 
     /**
-     * This method implements fetch, making subsequent api calls
-     * - For initial `/{storyType}` results we fetch again by story item id up to paged limit
+     * This method implements fetch, making subsequent item api calls 
+     * - For initial `/{storyType}` results we fetch again by story>item>id up to perPageLimit limit
      * @param {object} o
      * @param {number} o.perPage  // default is {perPageLimit}
      * @param {number} o.paged // total (results/perPage)[paged] zero is first item
      * @param {APIstoryTypes} o.value
-     * @returns {Promise<APIitem[]>}
+     * @returns {Promise< {data:APIitem[],pagedTotal:number} >}
      */
     async storiesPaged({ perPage = 15, paged = 0, value }) {
         if (!value) return Promise.reject('Must provide value for storiesPaged')
@@ -62,6 +62,7 @@ class Libs extends HackerNewsAPI {
             let resp = await r
 
             let results = chunks(resp, perPage) //> [ [],[],[] ] etc
+            let pagedTotal =results.length -1
 
             /** @type {APIstories} */
             let pagedResults = results[paged] ||[]
@@ -81,8 +82,12 @@ class Libs extends HackerNewsAPI {
                 let r = fetchItem(item.toString(), inx)
                 asyncResults.push(r)
             }
-            if (!asyncResults.length) return []
-            return Promise.all(asyncResults).then((n) => n.filter((nn) => !!nn))
+            if (!asyncResults.length) return {data:[],pagedTotal}
+            return Promise.all(asyncResults)
+                .then((n) => n.filter((nn) => !!nn))
+                .then(n=>{
+                    return {data:n,pagedTotal}
+                })
         } catch (err) {
             onerror('[storiesPaged]', err)
             return Promise.reject('storiesPaged error, check the service')

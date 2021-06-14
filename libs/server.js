@@ -1,55 +1,28 @@
-
 Object.assign = require('object-assign')
 module.exports = (DEBUG = true) => {
     /**
      * @type {import("../types").types.Iconfig}
      */
-    let config
+    const config = require('../config')
 
-    try {
-        // @ts-ignore
-        config = require('../config')
-    } catch (err) {
-        console.error('make sure to rename ./config-example.js to ./config.js')
-        return
-    }
-  
-    // const path = require('path')
     const session = require('./express-sess')
     const { listRoutes } = require('./utils')
     const messages = require('./messages')
-    const fs = require('fs')
+    //const fs = require('fs')
     const { log, onerror } = require('x-utils-es/umd')
     const express = require('express')
     const app = express()
     const morgan = require('morgan')
     const bodyParser = require('body-parser')
-
     const jwt = require('jsonwebtoken')
-
     const cors = require('cors')
     const ejs = require('ejs')
-
-    // add markdown support
-    const escapeHtml = require('escape-html')
-    const marked = require('marked')
 
     app.set('trust proxy', 1) // trust first proxy
     app.use(morgan('dev'))
     app.use(bodyParser.urlencoded({ extended: false }))
     app.use(bodyParser.json())
     app.use(cors())
-
-    // register markdown
-    app.engine('md', function(path, options, fn) {
-        fs.readFile(path, 'utf8', function(err, str) {
-            if (err) return fn(err)
-            var html = marked.parse(str).replace(/\{([^}]+)\}/g, function(_, name) {
-                return escapeHtml(options[name] || '')
-            })
-            fn(null, html)
-        })
-    })
 
     // for rendering html
     // @ts-ignore
@@ -63,15 +36,7 @@ module.exports = (DEBUG = true) => {
     // save logged in session and manage expiry
     session(app)
 
-    // ------------ init mongo DB
-    // const { mongoDB, DBControllers } = require('../mongoDB')
-
-    // const MongoDB = mongoDB()
-    // const mongo = new MongoDB(DEBUG)
-    // const dbc = new DBControllers(mongo, /* debug: */false)
-
     // initialize and wait for init to resolve
-
     // ---------- Initialize auth check controllers
     try {
         const serverAuth = require('./auth.controller')(app, undefined, jwt, DEBUG)
@@ -88,31 +53,27 @@ module.exports = (DEBUG = true) => {
     // ----- load our apps routes
     let userRouter
     try {
-        userRouter = require('./routes/user.router')(config, /** dbc */ undefined, /** mongo */undefined, jwt, DEBUG)
-        app.use('/user', userRouter)
+        userRouter = require('./routes/user.router')(config, /** dbc */ undefined, /** mongo */ undefined, jwt, DEBUG)
+        app.use('/api', userRouter)
     } catch (err) {
         onerror('[userApp]', err)
     }
 
-    app.get('/', function(req, res) {
-        res.render('index.md', { title: 'Markdown Example' })
-    })
-
     // -- add session validation to master app
 
-    app.use('/welcome', function(req, res) {
+    app.use('/welcome', function (req, res) {
         return res.status(200).json({ success: true, message: 'works fine', url: req.url, available_routes: listRoutes(userRouter.stack, '/user'), status: 200 })
     })
 
     // catch all other routes
     // @ts-ignore
-    app.all('*', function(req, res) {
+    app.all('*', function (req, res) {
         res.status(400).json({ ...messages['001'], error: true })
     })
 
     // -------- handle errors
     // @ts-ignore
-    app.use(function(error, req, res, next) {
+    app.use(function (error, req, res, next) {
         onerror(error)
         res.status(500).json({ error: true, ...messages['500'] })
     })
@@ -120,23 +81,13 @@ module.exports = (DEBUG = true) => {
     // ---
     // Initialize server
     const server = app.listen(config.port, function () {
-
         // @ts-ignore
-        const host = (server.address().address || '').replace(/::/, 'localhost')
+        const host = (server.address().address || '').replace(/::/, config.HOST)
         // @ts-ignore
         const port = server.address().port
-        log(`server running on http://${host}:${port}`)
+        log(`xyz-news server running on: ${host}`)
+        log(`port: ${port}`)// in case different 
     })
 
     return { server, app }
-
-    // mongo.init().then(n => {
-    //     // ------ run server
-    //     app.listen(config.port)
-    //     if (config.mongo.remote) attention('[remote][server]', 'running on port:', config.port)
-    //     else attention('[localhost][server]', 'running on port:', config.port)
-    // }).catch(err => {
-    //     onerror('[mongo]', err)
-    //     onerror('[mongo]', 'server did not start')
-    // })
 }

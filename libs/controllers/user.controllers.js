@@ -1,83 +1,83 @@
 
-const CONFIG = require('../../config')
+/**
+ * @typedef {import("../../types").types.TReq} Req
+ * @typedef {import("../../types").types.TResp} Resp
+ * @typedef {import("../../types").types.APIstoryTypes} APIstoryTypes
+ */
 
-// const { onerror } = require('x-utils-es/umd')
-const { cleanOut, validID, validStatus } = require('../utils')
-//  const messages = require('../messages')
-// const debug = true
-// const DBControllers = require('../../mongoDB/db.controllers')
+const API = require('../hacker-news-api')
+const messages = require('../messages')
+
 class ServerController {
-      
     constructor(opts, debug) {
         this.debug = debug
-
-        // adds intellisense support
-        // this.dbc = undefined
-        // if (dbc instanceof DBControllers) {
-        //     // all good
-        //     this.dbc = dbc
-        // } else {
-        //     throw ('db is not of DBControllers')
-        // }
+        this.API = new API()
     }
 
     /**
-       * - (GET) REST/api
-       * - `example:  /user/list`
-       * -  return all items in the /user/ for current user
-       * @param {import("../../types").types.TReq} req
-       */
-    async list(req, res) {
-        let limit = 50 // NOTE lets just set a static limit for now!
-        return res.status(200).json({
-            response: true,
-            code: 200
-        })
-    }
+     * (GET) REST/api => /stories/:type
+     * 
+     * - Accepting: {paged}
+     * @param {Req} req
+     * @param {Resp} res
+     * @returns 'paged results including each item detail'
+     */
+    async stories(req, res) {
+        // per page limit
+        const perPage = 15
 
-    /**
-       * - (POST) REST/api => /user/create
-       * - Create new /user/
-       * - Accepting: {title}
-       */
-    async create(req, res) {
-        //  await this.onMongoReady(req, res)
-        const body = req.body || {}
+        /** @type {APIstoryTypes} */
+        const type = req.params.type
+        let q = req.query
+        let paged = Number(q.paged ||0)
 
-        if (!body.title) {
-            return res.status(400).json({ error: 'missing title' })
+        if (paged < 0) {
+            return res.status(400).json(...messages['002'])
         }
 
-        const userData = {
-            // NOTE assign static user to each request for now
-            user: { name: CONFIG.mongo.defaultUser },
-            title: body.title
-        }
-        return res.status(200).json({
-            response: userData,
-            code: 200
-        })
+        return this.API.storiesPaged({ paged, perPage, value: type })
+          
+            .then((n) => {
+                res.status(200).json({
+                    response: n.data,
+                    paged: paged,
+                    pagedTotal:n.pagedTotal,
+                    code: 200,
+                })
+            })
+            .catch((err) => {
+                res.status(400).json({
+                    error: err,
+                    code: 400,
+                })
+            })
     }
 
     /**
-       * - (POST) REST/api
-       * - update {status}
-       * - Accepting {status}
-       * - `example:  /user/:id/update`
-       */
-    async update(req, res) {
-        //  await this.onMongoReady(req, res)
-        const id = req.params.id
-        const body = req.body || {}
-
-        if (!validID(id)) return res.status(400).json({ error: 'Not a valid {id}' })
-        // if (!validStatus(body.status || '')) return res.status(400).json({ error: 'Not a valid {status} provided' })
-
-        return res.status(200).json({
-            response: { id, ...body },
-            code: 200
-        })
+     * (GET) REST/api => /user/:name
+     * @param {Req} req
+     * @param {Resp} res
+     */
+    async user(req, res) {
+        const name = req.params.name
+        return this.API.fetch({ type: 'user', value: name })
+            .then((n) => {
+                if (!n) return {}
+                else return n
+            })
+            .then((n) => {
+                return res.status(200).json({
+                    response: n,
+                    code: 200,
+                })
+            }).catch(err=>{
+                return res.status(400).json({
+                    error: err,
+                    code: 400,
+                })
+            })
     }
+
 }
 
 /**

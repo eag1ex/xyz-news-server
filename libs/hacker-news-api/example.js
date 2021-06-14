@@ -31,7 +31,7 @@ function fetch() {
 }; //fetch()
 
 function storiesPaged(){
-    hn.storiesPaged({paged:14,value:'beststories',perPage:15}).then(n=>{
+    hn.storiesPaged({paged:13,value:'beststories',perPage:15}).then(n=>{
         log(n)
     }).catch(err=>{
         onerror(err)
