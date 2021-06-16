@@ -18,6 +18,18 @@ exports.listRoutes = (stack, appNameRoute) => {
 }
 
 /**
+ * test string is beond max allowed number
+ * @param {string} str 
+ * @param {number} max 
+ * @returns {boolean}
+ */
+exports.longString = (str = '', max) => {
+    if (!str) return false
+    if (str.split(' ').length > max) return false
+    else return true
+}
+
+/**
  * Decrypt string from btoa
  * @param {string} encoded 
  * @returns {string}
