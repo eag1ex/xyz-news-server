@@ -18,8 +18,6 @@ class ServerAuth {
     constructor(expressApp, debug) {
         this.debug = debug
         this.expressApp = expressApp
-
-
     }
 
 
