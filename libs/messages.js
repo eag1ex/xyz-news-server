@@ -8,5 +8,6 @@ module.exports = onMessages({
     '500': ['Server error', '500'],
     '600': ['Mongo connection error', '600'],
     '001': ['Route is no available', '001'],
-    '002':['Must provide {paged} param','002'] //stories
+    '002':['Must provide {paged} param','002'], //stories
+    '003':['Url not provided','003'] //metadata
 })

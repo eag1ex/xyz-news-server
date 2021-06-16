@@ -6,7 +6,9 @@
  */
 
 const API = require('../hacker-news-api')
+const htmlScrape = require('../html-scrape')
 const messages = require('../messages')
+const {decrypt} = require('../utils')
 
 class ServerController {
     constructor(opts, debug) {
@@ -52,6 +54,41 @@ class ServerController {
                 })
             })
     }
+
+    /**
+     * (GET) REST/api => /metadata/:url
+     * 
+     * @param {Req} req
+     * @param {Resp} res
+     * @returns 'return metadata parsed by htmlScrape plugin'
+     */
+    async metadata(req, res) {
+
+        /** @type {string} */
+        const url = decrypt((req.params.url ||''))
+        if (!url) {
+            return res.status(400).json(...messages['003'])
+        }
+
+        // let q = req.query
+        // let paged = Number(q.paged ||0)
+
+        return htmlScrape(url)
+            .then((n) => {
+                res.status(200).json({
+                    response: n,
+                    code: 200,
+                })
+            })
+            .catch((err) => {
+                res.status(400).json({
+                    error: err,
+                    code: 400,
+                })
+            })
+    }
+
+
 
     /**
      * (GET) REST/api => /user/:name

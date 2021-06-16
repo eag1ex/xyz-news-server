@@ -28,6 +28,7 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
     // TODO move xyz/api to seperate route
     // ---------- set server routes
     userRouter.get('/stories/:type', controllers.stories.bind(controllers))
+    userRouter.get('/metadata/:url', controllers.metadata.bind(controllers))
     userRouter.get('/user/:name', controllers.user.bind(controllers))
   // catch all other routes
     userRouter.all('/api/*', function(req, res) {

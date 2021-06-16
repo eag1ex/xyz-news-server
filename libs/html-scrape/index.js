@@ -9,10 +9,19 @@ var request = require('request')
 /**
  *
  * @param {string} url // url from story
- * @param {number} id  // id of the story
+ * @param {number?} id  // id of the story
  * @returns {Promise<{metadata:object,id:number}>} // returns mixed object, since each page is different
  */
-const htmlScrape = (url = '', id) => {
+const htmlScrape = (url = '', id=undefined) => {
+    if(!url) return Promise.reject('url not provided')
+
+    // test if url is valid
+    try{
+        new URL(url)
+    }catch(err){
+        return Promise.reject(`Invalid url provided: ${url}`)
+    }
+
     let defer = sq()
     const options = {
         url,

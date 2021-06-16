@@ -31,6 +31,7 @@
     "q": "^1.5.1",
     "query-string": "^7.0.0",
     "request": "^2.88.2",
+    "utf8": "^3.0.0",
     "x-utils-es": "^2.2.2"
   },
   "devDependencies": {

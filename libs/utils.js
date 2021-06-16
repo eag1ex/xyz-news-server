@@ -2,6 +2,9 @@ const { reduce } = require('lodash')
 const { copy, onerror, isEmpty } = require('x-utils-es/umd')
 const q = require('q')
 
+const base64 = require('base-64');
+const utf8 = require('utf8');
+
 const config = require('../config')
 exports.listRoutes = (stack, appNameRoute) => {
     return reduce(stack, (n, el, k) => {
@@ -12,6 +15,30 @@ exports.listRoutes = (stack, appNameRoute) => {
         }
         return n
     }, [])
+}
+
+/**
+ * Decrypt string from btoa
+ * @param {string} encoded 
+ * @returns {string}
+ */
+exports.decrypt = (encoded)=>{
+    if(!encoded) return ''
+    const bytes = base64.decode(encoded);
+    const text = utf8.decode(bytes);
+    return text
+}
+
+/**
+ * Encrypt string with btoa, can be decrypted with atob
+ * @param {string} str 
+ * @returns {string}
+ */
+exports.encrypt = (str)=>{
+    if(!str) return ''
+    const bytes = utf8.encode(str);
+    const encoded = base64.encode(bytes);
+    return encoded
 }
 
 
@@ -29,46 +56,6 @@ exports.validID = (id) => {
 }
 
 exports.validStatus = (status = '') => ['pending', 'completed'].indexOf(status || '') !== -1
-
-/**
- * - remove unwanted props from output
- * @param {*} o
- * @param {*} modelType bucket/subtask
- */
-exports.cleanOut = (o = {}, modelType = 'user') => {
-    try {
-        o = copy(o)
-        if (isEmpty(o)) return {}
-
-        if (!modelType || modelType === 'user') {
-            delete o.__v
-            // REVIEW  delete o.updatedAt just keep it for now
-            o.id = o._id
-            delete o._id
-            delete o.user
-            if ((o.subtasks || []).length) {
-                o.subtasks = o.subtasks.map(n => {
-                    n.todo_id = n._id
-                    // REVIEW  delete n.updatedAt just keep it for now
-                    delete n.__v
-                    delete n._id
-
-                    return n
-                })
-            }
-        } else {
-            delete o.__v
-            // REVIEW  delete o.updatedAt just keep it for now
-            o.todo_id = o._id
-            delete o._id
-        }
-
-        return o
-    } catch (err) {
-        onerror('[cleanOut]', err)
-        return { error: 'output error' }
-    }
-}
 
 /**
  * - accepting object of messages, example: `{'001':['SimpleOrder listStore is empty',001],...}`
