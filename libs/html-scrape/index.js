@@ -2,32 +2,43 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, log, isFalsy, onerror, isObject, isString } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, onerror } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
-const {longString} = require('../utils')
+const { longString } = require('../utils')
 /**
- * Format scraper output to nice/readable 1 level object format, 
+ * Format scraper output to nice/readable 1 level object format,
  * so we can parse it to html ul/li list.
  * @param {object} obj
- * @returns {object}
+ * @returns {Array<{name:string,value:[]| string}?>}
  */
 const formatMetadata = (obj = {}) => {
-    return Object.entries(obj).reduce((n, [k, el], i, all) => {
+    let o= Object.entries(obj).reduce((n, [k, el], i, all) => {
         if (!isObject(el)) return n
         const levelObj = Object.entries(el).reduce((nn, [kk, val]) => {
             if (isString(val) && val) {
                 let value = (val || '').trim()
                 // make it safe
                 let _kk = encodeURIComponent(kk || '').trim()
-                if (value && _kk && !longString(value,1)) nn[_kk] = value
+                if (value && _kk && !longString(value, 1)) nn[_kk] = value
             }
             return nn
         }, {})
         n[k] = { ...n[k], ...levelObj }
-        if(isFalsy( n[k])) delete n[k]
+        if (isFalsy(n[k])) delete n[k]
         return n
     }, {})
+
+    let list = []
+    for (let key in o){
+        let l = {name:key,value:o[key]}
+        if(isObject(l.value)){
+            let ll = Object.entries(l.value).map(([k,val])=>({name:k,value:val}))
+            l.value = ll
+        }
+        list.push(l)
+    }
+    return list
 }
 
 /**
@@ -36,13 +47,13 @@ const formatMetadata = (obj = {}) => {
  * @param {number?} id  // id of the story
  * @returns {Promise<{metadata:object,id:number}>} // returns mixed object, since each page is different
  */
-const htmlScrape = (url = '', id=undefined) => {
-    if(!url) return Promise.reject('url not provided')
+const htmlScrape = (url = '', id = undefined) => {
+    if (!url) return Promise.reject('url not provided')
 
     // test if url is valid
-    try{
+    try {
         new URL(url)
-    }catch(err){
+    } catch (err) {
         return Promise.reject(`Invalid url provided: ${url}`)
     }
 
@@ -69,11 +80,11 @@ const htmlScrape = (url = '', id=undefined) => {
 }
 
 // NOTE example:
-// htmlScrape('https://firstpartysimulator.org/',123)
-//     .then(n=>{
-//        log(n)
-//     }).catch(err=>{
-//         onerror(err)
-//     })
+htmlScrape('https://firstpartysimulator.org/',123)
+    .then(n=>{
+       log(n)
+    }).catch(err=>{
+        onerror(err)
+    })
 
 module.exports = htmlScrape
