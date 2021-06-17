@@ -23,6 +23,6 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
         next()
     })
     // app static routes
-    xyzRouter.get('*', controllers.app.bind(controllers))
+    xyzRouter.get('/*', controllers.app.bind(controllers))
     return xyzRouter
 }

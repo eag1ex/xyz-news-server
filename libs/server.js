@@ -33,8 +33,9 @@ module.exports = (DEBUG = true) => {
     app.set('view engine', 'html') // if we want to set default file extention, for example: .html, .md
     // static routes
     app.set('views',path.join(config.viewsDir, './xyz'));
-    app.use('/xyx/', express.static(path.join(config.viewsDir, './xyz')))
-    app.use(express.static('views/xyz'))
+    app.use('/xyz/', express.static(path.join(config.viewsDir, './xyz')))
+    app.use('/', express.static(path.join(config.viewsDir, './xyz')))
+   // app.use(express.static('views/xyz'))
     // save logged in session and manage expiry
     session(app)
 
@@ -64,6 +65,7 @@ module.exports = (DEBUG = true) => {
     try {
         xyzRouter = require('./routes/xyz.router')(config, /** dbc */ undefined, /** mongo */ undefined, jwt, DEBUG)
         app.use('/xyz', xyzRouter)
+       
     } catch (err) {
         onerror('[xyzApp]', err)
     }
