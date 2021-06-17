@@ -2,10 +2,15 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, isFalsy, isObject, isString, log, onerror } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, onerror,inIndex } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
 const { longString } = require('../utils')
+
+// NOTE do not parse urls from ignore list
+const ignoreList = [/github.com/i]
+
+
 /**
  * Format scraper output to nice/readable 1 level object format,
  * so we can parse it to html ul/li list.
@@ -49,7 +54,7 @@ const formatMetadata = (obj = {}) => {
  */
 const htmlScrape = (url = '', id = undefined) => {
     if (!url) return Promise.reject('url not provided')
-
+    
     // test if url is valid
     try {
         new URL(url)
@@ -57,6 +62,10 @@ const htmlScrape = (url = '', id = undefined) => {
         return Promise.reject(`Invalid url provided: ${url}`)
     }
 
+    // @ts-ignore
+    if(inIndex(url,ignoreList)) return Promise.reject('This url is not permited')
+
+    log('[htmlScrape][calling]',url)
     let defer = sq()
     const options = {
         url,
@@ -79,12 +88,13 @@ const htmlScrape = (url = '', id = undefined) => {
     return defer
 }
 
+
 // NOTE example:
-htmlScrape('https://firstpartysimulator.org/',123)
-    .then(n=>{
-       log(n)
-    }).catch(err=>{
-        onerror(err)
-    })
+// htmlScrape('https://www.chimamanda.com/',123)
+//     .then(n=>{
+//        log(n)
+//     }).catch(err=>{
+//         onerror(err)
+//     })
 
 module.exports = htmlScrape

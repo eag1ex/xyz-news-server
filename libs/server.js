@@ -4,7 +4,7 @@ module.exports = (DEBUG = true) => {
      * @type {import("../types").types.Iconfig}
      */
     const config = require('../config')
-
+    const path = require('path')
     const session = require('./express-sess')
     const { listRoutes } = require('./utils')
     const messages = require('./messages')
@@ -24,15 +24,17 @@ module.exports = (DEBUG = true) => {
     app.use(bodyParser.json())
     app.use(cors())
 
+
+
+
     // for rendering html
     // @ts-ignore
     app.engine('html', ejs.__express) // ejs.renderFile
-    // app.set('view engine', 'html') // if we want to set default file extention, for example: .html, .md
-    app.set('views', config.viewsDir)
-    // app.set('views', path.join(config.viewsDir, 'admin'))
+    app.set('view engine', 'html') // if we want to set default file extention, for example: .html, .md
     // static routes
-    // app.use('/login/', express.static(path.join(config.viewsDir, './admin')))
-    // app.use('/user/', express.static(path.join(config.viewsDir, './user-app')))
+    app.set('views',path.join(config.viewsDir, './xyz'));
+    app.use('/xyx/', express.static(path.join(config.viewsDir, './xyz')))
+    app.use(express.static('views/xyz'))
     // save logged in session and manage expiry
     session(app)
 
@@ -42,27 +44,34 @@ module.exports = (DEBUG = true) => {
         const serverAuth = require('./auth.controller')(app, undefined, jwt, DEBUG)
 
         // validate login to ./app with post/auth credentials
-        //  app.post('/auth', serverAuth.postAuth.bind(serverAuth))
+        // app.post('/auth', serverAuth.postAuth.bind(serverAuth))
         serverAuth.AppUseAuth()
-        // app.get('/login', serverAuth.login.bind(serverAuth))
     } catch (err) {
         onerror('[ServerAuth]', err)
         return
     }
 
-    // ----- load our apps routes
-    let userRouter
+    // ----- load our app routes
+    let apiRouter
     try {
-        userRouter = require('./routes/user.router')(config, /** dbc */ undefined, /** mongo */ undefined, jwt, DEBUG)
-        app.use('/api', userRouter)
+        apiRouter = require('./routes/api.router')(config, /** dbc */ undefined, /** mongo */ undefined, jwt, DEBUG)
+        app.use('/api', apiRouter)
     } catch (err) {
-        onerror('[userApp]', err)
+        onerror('[apiApp]', err)
+    }
+
+    let xyzRouter
+    try {
+        xyzRouter = require('./routes/xyz.router')(config, /** dbc */ undefined, /** mongo */ undefined, jwt, DEBUG)
+        app.use('/xyz', xyzRouter)
+    } catch (err) {
+        onerror('[xyzApp]', err)
     }
 
     // -- add session validation to master app
 
     app.use('/welcome', function (req, res) {
-        return res.status(200).json({ success: true, message: 'works fine', url: req.url, available_routes: listRoutes(userRouter.stack, '/user'), status: 200 })
+        return res.status(200).json({ success: true, message: 'works fine', url: req.url, available_routes: listRoutes(apiRouter.stack, '/user'), status: 200 })
     })
 
     // catch all other routes
@@ -86,7 +95,7 @@ module.exports = (DEBUG = true) => {
         // @ts-ignore
         const port = server.address().port
         log(`xyz-news server running on: ${host}`)
-        log(`port: ${port}`)// in case different 
+        log(`port: ${port}`) // in case different
     })
 
     return { server, app }

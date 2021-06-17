@@ -19,7 +19,7 @@ const qstring = require('query-string')
 class HackerNewsAPI {
     base = config.API.base
     options = {
-        url: '', //this.base,
+        url: '', 
         method: 'GET',
         // headers: {},
         timeout: config.timeout,
@@ -99,7 +99,7 @@ class HackerNewsAPI {
                 onerror(body || msg)
                 return defer.reject(msg)
             } else {
-                if(isFalsy(body)) defer.reject('No results found')
+                if(isFalsy(body)) defer.reject(`No results found for url:${this.options.url}`)
                 else defer.resolve(body)
                
             }
