@@ -36,6 +36,26 @@ declare namespace types {
         descendants?:number; // In the case of stories or polls, the total comment count.
     }
 
+    
+    declare interface StoryResponse {
+        response: Array<APIitem>;
+        paged: number;
+        pagedTotal: number;
+        code: number;
+    }
+
+    declare interface MetaResponse{
+        response: { metadata: Array<{ name: string, value: []}>, id?: string};
+        code: number;
+    }
+
+    declare interface UserResponse {
+        response: APIuser;
+        code: number;
+    }
+
+    
+
     declare interface ApiParams{
         type:'user'| 'story' |'item'
         value:APIQuery | string

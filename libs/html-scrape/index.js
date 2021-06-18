@@ -58,7 +58,7 @@ const formatMetadata = (obj = {}) => {
  *
  * @param {string} url // url from story
  * @param {number?} id  // id of the story
- * @returns {Promise<{metadata:object,id:number}>} // returns mixed object, since each page is different
+ * @returns {Promise<{metadata:Array<any>,id:number}>} // returns mixed object, since each page is different
  */
 const htmlScrape = (url = '', id = undefined) => {
     if (!url) return Promise.reject('url not provided')
@@ -72,7 +72,7 @@ const htmlScrape = (url = '', id = undefined) => {
 
     // @ts-ignore
     if(inIndex(url,ignoreList)) {
-        let msg = 'This url is not permited'
+        let msg = 'This url is not permitted'
         warn(msg)
         return Promise.reject(msg)
     }
