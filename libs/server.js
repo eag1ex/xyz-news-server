@@ -27,7 +27,7 @@ module.exports = (DEBUG = true) => {
     // for rendering html
     // @ts-ignore
     app.engine('html', ejs.__express) // ejs.renderFile
-    app.set('view engine', 'html') // if we want to set default file extention, for example: .html, .md
+    app.set('view engine', 'html') // if we want to set default file extension, for example: .html, .md
     // static routes
     app.set('views', path.join(config.viewsDir, './xyz'))
     app.use('/xyz/', express.static(path.join(config.viewsDir, './xyz')))

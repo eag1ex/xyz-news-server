@@ -6,6 +6,7 @@ const base64 = require('base-64')
 const utf8 = require('utf8')
 const config = require('../config')
 
+/* istanbul ignore next */ 
 exports.listRoutes = (stack, appNameRoute) => {
     return reduce(stack, (n, el, k) => {
         if (el.route) {

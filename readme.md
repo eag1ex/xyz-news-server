@@ -27,22 +27,11 @@ Build in `Node.js 12.0.0` and `NPM 6.9.0` in strict mode, maybe supported on hig
 
 
 #### Start
-Server starts on `http://localhost:5000/` 
-- XYZ News app *(production)* can be accessed from `http://localhost:5000/xyz`
+XYZ News app *(production)* can be accessed from `http://localhost:5000/xyz`
 
 ```sh
 /$ npm start 
 ```
-
-
-
-#### Config
-Configuration defaults at `./config.js`
-
-
-
-### Base api from HackerNews
-Refer to https://github.com/HackerNews/API
 
 
 ### API
@@ -60,6 +49,16 @@ Available server routes:
 (GET) http://localhost:5000/api/metadata/:url # /api/metadata/aHR0cHM6Ly9hcnN0ZWNobmljYS5jb20vZ2FkZ2V0cy8yMDIxLzA2Lw== 
 
 ```
+
+
+#### Config
+Configuration defaults at `./config.js`
+
+
+### Base api from HackerNews
+Refer to https://github.com/HackerNews/API
+
+
 
 
 #### Stack
