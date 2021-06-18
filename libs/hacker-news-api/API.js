@@ -36,7 +36,6 @@ class HackerNewsAPI {
         /* istanbul ignore next */ 
         if (isFalsy(params)) return Promise.reject('No params supplied')
 
-        /* istanbul ignore next */ 
         if (['story', 'user', 'item'].indexOf(params.type) === -1) {
             return Promise.reject('Invalid params supplied')
         }

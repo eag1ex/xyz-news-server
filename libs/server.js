@@ -75,12 +75,14 @@ module.exports = (DEBUG = true) => {
 
     // catch all other routes
     // @ts-ignore
+    /* istanbul ignore next */   
     app.all('*', function (req, res) {
         res.status(400).json({ ...messages['001'], error: true })
     })
 
     // -------- handle errors
     // @ts-ignore
+    /* istanbul ignore next */   
     app.use(function (error, req, res, next) {
         onerror(error)
         res.status(500).json({ error: true, ...messages['500'] })

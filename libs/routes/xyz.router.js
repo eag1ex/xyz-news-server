@@ -15,7 +15,8 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
     // const messages = require('../messages')
     // -------- Initialize our controllers
     const controllers = require('../controllers/xyz.app')()
-
+    
+    /* istanbul ignore next */ 
     xyzRouter.use(function timeLog(req, res, next) {
         log('Time: ', Date.now())
         next()

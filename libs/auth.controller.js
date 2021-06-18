@@ -2,8 +2,6 @@
  * - ServerAuth extension
  */
 
-// const config = require('../config')
-
 class ServerAuth {
     /**
      *
@@ -22,7 +20,6 @@ class ServerAuth {
         res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization, token-expiry')
         res.header('Referrer-Policy', 'no-referrer') // for google external assets
-        //
         return next()
     }
 

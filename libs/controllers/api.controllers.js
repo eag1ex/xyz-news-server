@@ -70,9 +70,6 @@ class ServerController {
             return res.status(400).json(...messages['003'])
         }
 
-        // let q = req.query
-        // let paged = Number(q.paged ||0)
-
         return htmlScrape(url)
             .then((n) => {
                 res.status(200).json({

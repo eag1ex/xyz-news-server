@@ -35,6 +35,13 @@ describe('Test hacker news API', function () {
 
             try {
                 // @ts-ignore
+                await hn.fetch({ type: 'nonexist' })
+            } catch (err) {
+                expect(err.length).have.length
+            }
+
+            try {
+                // @ts-ignore
                 await hn.fetch({ type: 'user' })
             } catch (err) {
                 expect(err.length).have.length

@@ -16,7 +16,8 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
     
     // -------- Initialize our controllers
     const controllers = require('../controllers/api.controllers')(db, mongo, jwt, DEBUG)
-
+    
+    /* istanbul ignore next */ 
     apiRouter.use(function timeLog(req, res, next) {
         log('Time: ', Date.now())
         next()

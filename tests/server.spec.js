@@ -250,12 +250,12 @@ describe('PASS:GET /api/user:name (2 pass/fail)', function () {
 
 
 
-describe('Test app route on /xyz', function () {
+describe('Test app route on /xyz/app/stories/new', function () {
     after(function (done) {
         serverApp.server.close()
         done()
     })
-    it(`/xyz should have status: 200`, function (done) {
+    it(`/xyz/app/stories/new should have status: 200`, function (done) {
         this.timeout(10000)
 
         chaiGetRequest(serverApp.server, `/xyz`).then((res) => {
