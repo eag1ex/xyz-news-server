@@ -1,9 +1,9 @@
 const { reduce } = require('lodash')
-const { copy, onerror, isEmpty } = require('x-utils-es/umd')
+const { onerror } = require('x-utils-es/umd')
 const q = require('q')
 
-const base64 = require('base-64');
-const utf8 = require('utf8');
+const base64 = require('base-64')
+const utf8 = require('utf8')
 
 const config = require('../config')
 exports.listRoutes = (stack, appNameRoute) => {
@@ -34,10 +34,10 @@ exports.longString = (str = '', max) => {
  * @param {string} encoded 
  * @returns {string}
  */
-exports.decrypt = (encoded)=>{
-    if(!encoded) return ''
-    const bytes = base64.decode(encoded);
-    const text = utf8.decode(bytes);
+exports.decrypt = (encoded) => {
+    if (!encoded) return ''
+    const bytes = base64.decode(encoded)
+    const text = utf8.decode(bytes)
     return text
 }
 
@@ -46,13 +46,12 @@ exports.decrypt = (encoded)=>{
  * @param {string} str 
  * @returns {string}
  */
-exports.encrypt = (str)=>{
-    if(!str) return ''
-    const bytes = utf8.encode(str);
-    const encoded = base64.encode(bytes);
+exports.encrypt = (str) => {
+    if (!str) return ''
+    const bytes = utf8.encode(str)
+    const encoded = base64.encode(bytes)
     return encoded
 }
-
 
 /**
  * check if mongo _id is valid format

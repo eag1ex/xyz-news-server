@@ -8,7 +8,7 @@
 const API = require('../hacker-news-api')
 const htmlScrape = require('../html-scrape')
 const messages = require('../messages')
-const {decrypt} = require('../utils')
+const { decrypt } = require('../utils')
 
 class ServerController {
     constructor(opts, debug) {
@@ -31,7 +31,7 @@ class ServerController {
         /** @type {APIstoryTypes} */
         const type = req.params.type
         let q = req.query
-        let paged = Number(q.paged ||0)
+        let paged = Number(q.paged || 0)
 
         if (paged < 0) {
             return res.status(400).json(...messages['002'])
@@ -43,14 +43,14 @@ class ServerController {
                 res.status(200).json({
                     response: n.data,
                     paged: paged,
-                    pagedTotal:n.pagedTotal,
-                    code: 200,
+                    pagedTotal: n.pagedTotal,
+                    code: 200
                 })
             })
             .catch((err) => {
                 res.status(400).json({
                     error: err,
-                    code: 400,
+                    code: 400
                 })
             })
     }
@@ -65,7 +65,7 @@ class ServerController {
     async metadata(req, res) {
 
         /** @type {string} */
-        const url = decrypt((req.params.url ||''))
+        const url = decrypt((req.params.url || ''))
         if (!url) {
             return res.status(400).json(...messages['003'])
         }
@@ -77,18 +77,16 @@ class ServerController {
             .then((n) => {
                 res.status(200).json({
                     response: n,
-                    code: 200,
+                    code: 200
                 })
             })
             .catch((err) => {
                 res.status(400).json({
                     error: err,
-                    code: 400,
+                    code: 400
                 })
             })
     }
-
-
 
     /**
      * (GET) REST/api => /user/:name
@@ -105,12 +103,12 @@ class ServerController {
             .then((n) => {
                 return res.status(200).json({
                     response: n,
-                    code: 200,
+                    code: 200
                 })
-            }).catch(err=>{
+            }).catch(err => {
                 return res.status(400).json({
                     error: err,
-                    code: 400,
+                    code: 400
                 })
             })
     }

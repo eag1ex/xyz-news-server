@@ -7,7 +7,6 @@
  * @typedef {import("../../types").types.APIstoryTypes} APIstoryTypes
  */
 
-
 const { warn, onerror, log, chunks } = require('x-utils-es/umd')
 const HackerNewsAPI = require('./API')
 
@@ -61,13 +60,13 @@ class Libs extends HackerNewsAPI {
             let r = await this.fetch({ type: 'story', value })
             let resp = await r
 
-            let results = chunks(resp, perPage) //> [ [],[],[] ] etc
-            let pagedTotal =results.length -1
+            let results = chunks(resp, perPage) // > [ [],[],[] ] etc
+            let pagedTotal = results.length - 1
 
             /** @type {APIstories} */
-            let pagedResults = results[paged] ||[]
+            let pagedResults = results[paged] || []
 
-            if(!pagedResults.length){
+            if (!pagedResults.length) {
                 let lastAvail = results.length - 1
                 return Promise.reject(`No results found for paged:${paged}, last available was paged:${lastAvail}`)
             }
@@ -82,17 +81,17 @@ class Libs extends HackerNewsAPI {
                 let r = fetchItem(item.toString(), inx)
                 asyncResults.push(r)
             }
-            if (!asyncResults.length) return {data:[],pagedTotal}
+            if (!asyncResults.length) return { data: [], pagedTotal }
             return Promise.all(asyncResults)
                 .then((n) => n.filter((nn) => !!nn)
                     // sort by time                
-                    .sort((a,b)=>{
-                        if(b.time && a.time) return b.time -a.time
+                    .sort((a, b) => {
+                        if (b.time && a.time) return b.time - a.time
                         else return -1
                     }) 
                 )
-                .then(n=>{
-                    return {data:n,pagedTotal}
+                .then(n => {
+                    return { data: n, pagedTotal }
                 })
         } catch (err) {
             onerror('[storiesPaged]', err)
@@ -100,6 +99,5 @@ class Libs extends HackerNewsAPI {
         }
     }
 }
-
 
 module.exports = Libs

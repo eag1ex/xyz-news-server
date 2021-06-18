@@ -8,7 +8,7 @@ module.exports = (DEBUG = true) => {
     const session = require('./express-sess')
     const { listRoutes } = require('./utils')
     const messages = require('./messages')
-    //const fs = require('fs')
+    // const fs = require('fs')
     const { log, onerror, debug } = require('x-utils-es/umd')
     const express = require('express')
     const app = express()
@@ -24,18 +24,15 @@ module.exports = (DEBUG = true) => {
     app.use(bodyParser.json())
     app.use(cors())
 
-
-
-
     // for rendering html
     // @ts-ignore
     app.engine('html', ejs.__express) // ejs.renderFile
     app.set('view engine', 'html') // if we want to set default file extention, for example: .html, .md
     // static routes
-    app.set('views',path.join(config.viewsDir, './xyz'));
+    app.set('views', path.join(config.viewsDir, './xyz'))
     app.use('/xyz/', express.static(path.join(config.viewsDir, './xyz')))
     app.use('/', express.static(path.join(config.viewsDir, './xyz')))
-   // app.use(express.static('views/xyz'))
+    // app.use(express.static('views/xyz'))
     // save logged in session and manage expiry
     session(app)
 
@@ -100,8 +97,8 @@ module.exports = (DEBUG = true) => {
         log(`port: ${port}`) // in case different
         
         log()
-        debug('api access from: ',host +'/api/{routeName}')
-        debug('production xyz/app hosted from : ',host +'/xyz')
+        debug('api access from: ', host + '/api/{routeName}')
+        debug('production xyz/app hosted from : ', host + '/xyz')
     })
 
     return { server, app }

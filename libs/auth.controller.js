@@ -2,9 +2,7 @@
  * - ServerAuth extension
  */
 
-const config = require('../config')
-//const { validate, getToken, JWTverifyAccess } = require('./utils')
-// const ENV = config.env // development,production
+// const config = require('../config')
 
 class ServerAuth {
     /**

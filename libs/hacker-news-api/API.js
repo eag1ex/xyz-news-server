@@ -6,7 +6,6 @@
  * @typedef {import("../../types").types.APIuser} APIuser
  */
 
-
 const request = require('request')
 const { isFalsy, sq, onerror, log } = require('x-utils-es/umd')
 const config = require('../../config')
@@ -23,7 +22,7 @@ class HackerNewsAPI {
         method: 'GET',
         // headers: {},
         timeout: config.timeout,
-        json: true,
+        json: true
     }
 
     constructor() {}
@@ -36,18 +35,18 @@ class HackerNewsAPI {
     fetch(params) {
         if (isFalsy(params)) return Promise.reject('No params supplied')
 
-        if (['story', 'user','item'].indexOf(params.type) === -1) {
+        if (['story', 'user', 'item'].indexOf(params.type) === -1) {
             return Promise.reject('Invalid params supplied')
         }
 
         if (params.type === 'user') {
             // example output : https://hacker-news.firebaseio.com/v0/user/jl.json?print=pretty
-            if(!params.value) return Promise.reject(`No value for type:${params.type} provided`)
+            if (!params.value) return Promise.reject(`No value for type:${params.type} provided`)
             let uri = url.resolve(this.base, `user/${params.value}.json`)
             let q = qstring.stringify(
                 { print: 'pretty' },
                 {
-                    skipEmptyString: true,
+                    skipEmptyString: true
                 }
             )
 
@@ -57,13 +56,13 @@ class HackerNewsAPI {
         if (params.type === 'story') {
             // all available stories (top cats) have same format
             // example output : https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty
-            if(!params.value) return Promise.reject(`No value for type:${params.type} provided`)
+            if (!params.value) return Promise.reject(`No value for type:${params.type} provided`)
 
             let uri = url.resolve(this.base, `${params.value}.json`)
             let q = qstring.stringify(
                 { print: 'pretty' },
                 {
-                    skipEmptyString: true,
+                    skipEmptyString: true
                 }
             )
             this.options.url = uri + '?' + q
@@ -73,12 +72,12 @@ class HackerNewsAPI {
             let val = Number(params.value)
             // all available stories (top cats) have same format
             // example output : https://hacker-news.firebaseio.com/v0/item/27476207.json?print=pretty
-            if(val<1) return Promise.reject(`No value for type:${params.type} provided`)
+            if (val < 1) return Promise.reject(`No value for type:${params.type} provided`)
             let uri = url.resolve(this.base, `item/${params.value}.json`)
             let q = qstring.stringify(
                 { print: 'pretty' },
                 {
-                    skipEmptyString: true,
+                    skipEmptyString: true
                 }
             )
             this.options.url = uri + '?' + q
@@ -86,7 +85,7 @@ class HackerNewsAPI {
 
         let defer = sq()
 
-        log('[HackerNewsAPI][fetch]','calling >> ',this.options.url)
+        log('[HackerNewsAPI][fetch]', 'calling >> ', this.options.url)
 
         request(this.options, (err, res, body) => {
             if (err) {
@@ -99,7 +98,7 @@ class HackerNewsAPI {
                 onerror(body || msg)
                 return defer.reject(msg)
             } else {
-                if(isFalsy(body)) defer.reject(`No results found for url:${this.options.url}`)
+                if (isFalsy(body)) defer.reject(`No results found for url:${this.options.url}`)
                 else defer.resolve(body)
                
             }

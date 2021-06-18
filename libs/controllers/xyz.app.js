@@ -7,20 +7,19 @@
  * @typedef {import("../../types").types.TResp} Resp
  */
 
-class App{
-    constructor(){}
+class App {
+    constructor() {}
 
-     /**
+    /**
          * /xyz/app
          * render our app here
          * @param {Req} req
          * @param {Resp} res
          */
-        app(req, res, next) {
-           return res.render('../xyz/index')
-        }
+    app(req, res, next) {
+        return res.render('../xyz/index')
+    }
 }
-
 
 /**
  * 
@@ -29,5 +28,3 @@ class App{
 module.exports = () => {
     return new App()
 }
-
-

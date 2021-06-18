@@ -2,14 +2,13 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, isFalsy, isObject, isString, log, onerror,inIndex, warn } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, inIndex, warn } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
 const { longString } = require('../utils')
 
 // NOTE do not parse urls from ignore list
-const ignoreList = [/github.com/i, /.pdf/i,/.jpg/i,/.xml/i,/.json/i,/.ru/i,/.gov/i ]
-
+const ignoreList = [/github.com/i, /.pdf/i, /.jpg/i, /.xml/i, /.json/i, /.ru/i, /.gov/i ]
 
 /**
  * Format scraper output to nice/readable 1 level object format,
@@ -23,12 +22,12 @@ const formatMetadata = (obj = {}) => {
         if (!isObject(el)) return n
         const levelObj = Object.entries(el).reduce((nn, [kk, val]) => {
             if (isString(val) && val) {
-                let value = (val || '').trim() ||''
+                let value = (val || '').trim() || ''
   
                 // limit string
                 let strLimit = 5000
-                if (value.length>strLimit){
-                    value = value.substr(0,strLimit) +' [...]'
+                if (value.length > strLimit) {
+                    value = value.substr(0, strLimit) + ' [...]'
                 }
 
                 // make it safe
@@ -43,10 +42,10 @@ const formatMetadata = (obj = {}) => {
     }, {})
 
     let list = []
-    for (let key in o){
-        let l = {name:key,value:o[key]}
-        if(isObject(l.value)){
-            let ll = Object.entries(l.value).map(([k,val])=>({name:k,value:val}))
+    for (let key in o) {
+        let l = { name: key, value: o[key] }
+        if (isObject(l.value)) {
+            let ll = Object.entries(l.value).map(([k, val]) => ({ name: k, value: val }))
             l.value = ll
         }
         list.push(l)
@@ -71,21 +70,21 @@ const htmlScrape = (url = '', id = undefined) => {
     }
 
     // @ts-ignore
-    if(inIndex(url,ignoreList)) {
+    if (inIndex(url, ignoreList)) {
         let msg = 'This url is not permitted'
         warn(msg)
         return Promise.reject(msg)
     }
 
-    log('[htmlScrape][calling]',url)
+    log('[htmlScrape][calling]', url)
     let defer = sq()
     const options = {
         url,
         jar: request.jar(),
         headers: {
             // to be friendly :)
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.7113.93 Safari/537.36',
-        },
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.7113.93 Safari/537.36'
+        }
     }
 
     scrape(options, function (error, metadata) {
@@ -97,13 +96,11 @@ const htmlScrape = (url = '', id = undefined) => {
             if (isFalsy(meta)) {
                 warn('[htmlScrape]', `No suitable metadata for url:${url} `)
                 return defer.reject('No metadata available.')
-            }
-            else defer.resolve({ metadata: meta, id })
+            } else defer.resolve({ metadata: meta, id })
         }
     })
     return defer
 }
-
 
 // NOTE example:
 // htmlScrape('https://www.chimamanda.com/',123)
