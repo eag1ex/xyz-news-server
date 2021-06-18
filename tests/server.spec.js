@@ -265,5 +265,18 @@ describe('PASS:GET /api/user:name (2 pass/fail)', function () {
 })
 
 
-// TODO 
-// just add /xyz route for coverage should only return status 200
+
+describe('Test app route on /xyz', function () {
+    after(function (done) {
+        serverApp.server.close()
+        done()
+    })
+    it(`/xyz should have status: 200`, function (done) {
+        this.timeout(10000)
+
+        chaiGetRequest(serverApp.server, `/xyz`).then((res) => {
+            res.should.have.status('200')
+            done()
+        })
+    })
+})

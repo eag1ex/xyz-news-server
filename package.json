@@ -11,8 +11,8 @@
     "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard eslint-plugin-promise@latest --save-dev",
     "lint": "./node_modules/.bin/eslint  --ext .js libs",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js libs",
-    "mocha": "mocha ./tests/{*,/*}.spec.js --colors",
-    "test": "nyc --reporter=html --port=2222 --reporter=text mocha ./tests/{*,/*}.spec.js --colors"
+    "test": "mocha ./tests/{*,/*}.spec.js --colors",
+    "coverage": "nyc --reporter=html --port=2222 --reporter=text mocha ./tests/{*,/*}.spec.js --colors"
   },
   "engineStrict": true,
   "engines": {
