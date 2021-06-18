@@ -2,13 +2,13 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, isFalsy, isObject, isString, log, onerror,inIndex } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, onerror,inIndex, warn } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
 const { longString } = require('../utils')
 
 // NOTE do not parse urls from ignore list
-const ignoreList = [/github.com/i]
+const ignoreList = [/github.com/i, /.pdf/i,/.jpg/i,/.xml/i,/.json/i,/.ru/i,/.gov/i ]
 
 
 /**
@@ -18,11 +18,19 @@ const ignoreList = [/github.com/i]
  * @returns {Array<{name:string,value:[]| string}?>}
  */
 const formatMetadata = (obj = {}) => {
-    let o= Object.entries(obj).reduce((n, [k, el], i, all) => {
+  
+    let o = Object.entries(obj).reduce((n, [k, el], i, all) => {
         if (!isObject(el)) return n
         const levelObj = Object.entries(el).reduce((nn, [kk, val]) => {
             if (isString(val) && val) {
-                let value = (val || '').trim()
+                let value = (val || '').trim() ||''
+  
+                // limit string
+                let strLimit = 5000
+                if (value.length>strLimit){
+                    value = value.substr(0,strLimit) +' [...]'
+                }
+
                 // make it safe
                 let _kk = encodeURIComponent(kk || '').trim()
                 if (value && _kk && !longString(value, 1)) nn[_kk] = value
@@ -63,7 +71,11 @@ const htmlScrape = (url = '', id = undefined) => {
     }
 
     // @ts-ignore
-    if(inIndex(url,ignoreList)) return Promise.reject('This url is not permited')
+    if(inIndex(url,ignoreList)) {
+        let msg = 'This url is not permited'
+        warn(msg)
+        return Promise.reject(msg)
+    }
 
     log('[htmlScrape][calling]',url)
     let defer = sq()
@@ -78,10 +90,14 @@ const htmlScrape = (url = '', id = undefined) => {
 
     scrape(options, function (error, metadata) {
         if (error || isFalsy(metadata)) {
+            warn('[htmlScrape]', `no metadata for url:${url} `)
             return defer.reject('No metadata available.')
         } else {
             const meta = formatMetadata(metadata)
-            if (isFalsy(meta)) return defer.reject('No metadata available.')
+            if (isFalsy(meta)) {
+                warn('[htmlScrape]', `No suitable metadata for url:${url} `)
+                return defer.reject('No metadata available.')
+            }
             else defer.resolve({ metadata: meta, id })
         }
     })

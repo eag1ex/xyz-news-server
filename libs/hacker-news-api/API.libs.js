@@ -84,7 +84,13 @@ class Libs extends HackerNewsAPI {
             }
             if (!asyncResults.length) return {data:[],pagedTotal}
             return Promise.all(asyncResults)
-                .then((n) => n.filter((nn) => !!nn))
+                .then((n) => n.filter((nn) => !!nn)
+                    // sort by time                
+                    .sort((a,b)=>{
+                        if(b.time && a.time) return b.time -a.time
+                        else return -1
+                    }) 
+                )
                 .then(n=>{
                     return {data:n,pagedTotal}
                 })

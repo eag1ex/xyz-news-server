@@ -13,8 +13,6 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
     const express = require('express')
     const xyzRouter = express.Router()
     //const messages = require('../messages')
-
-    
     // -------- Initialize our controllers
     const controllers = require('../controllers/xyz.app')()
 

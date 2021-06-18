@@ -9,7 +9,7 @@ module.exports = (DEBUG = true) => {
     const { listRoutes } = require('./utils')
     const messages = require('./messages')
     //const fs = require('fs')
-    const { log, onerror } = require('x-utils-es/umd')
+    const { log, onerror, debug } = require('x-utils-es/umd')
     const express = require('express')
     const app = express()
     const morgan = require('morgan')
@@ -98,6 +98,10 @@ module.exports = (DEBUG = true) => {
         const port = server.address().port
         log(`xyz-news server running on: ${host}`)
         log(`port: ${port}`) // in case different
+        
+        log()
+        debug('api access from: ',host +'/api/{routeName}')
+        debug('production xyz/app hosted from : ',host +'/xyz')
     })
 
     return { server, app }

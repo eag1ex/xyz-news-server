@@ -8,10 +8,16 @@
   "typings": "./types",
   "scripts": {
     "start": "node ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
     "lint:install": "npm i babel-eslint eslint eslint-plugin-node eslint-plugin-standard eslint-plugin-promise@latest --save-dev",
     "lint": "./node_modules/.bin/eslint  --ext .js libs",
-    "lint:fix": "./node_modules/.bin/eslint --fix --ext .js libs"
+    "lint:fix": "./node_modules/.bin/eslint --fix --ext .js libs",
+    "mocha": "mocha ./tests/{*,/*}.spec.js --colors",
+    "test": "nyc --reporter=html --port=2222 --reporter=text mocha ./tests/{*,/*}.spec.js --colors"
+  },
+  "engineStrict": true,
+  "engines": {
+    "node": "~12.0.0",
+    "npm": "~6.9.0"
   },
   "author": "",
   "license": "ISC",
@@ -37,9 +43,13 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "bash-color": "0.0.4",
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
     "eslint": "^7.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
-    "eslint-plugin-standard": "^5.0.0"
+    "eslint-plugin-standard": "^5.0.0",
+    "mocha": "^9.0.1",
+    "nyc": "^15.1.0"
   }
 }
