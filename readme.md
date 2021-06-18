@@ -74,6 +74,7 @@ For client app visit: `https://bitbucket.org/eag1ex/bucket-list-app-client`
 
 #### Tests
 Tests provided, just run `npm run coverage`
+- last coverage report in: `./coverage/lcov-report/index.html`
 *tests depend on live api to work, if you get a fail, try extending timeout inside test files, or update `./tests/user-test.data.js` variables*
 
 
