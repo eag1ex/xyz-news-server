@@ -4,8 +4,8 @@ const q = require('q')
 
 const base64 = require('base-64')
 const utf8 = require('utf8')
-
 const config = require('../config')
+
 exports.listRoutes = (stack, appNameRoute) => {
     return reduce(stack, (n, el, k) => {
         if (el.route) {
@@ -34,6 +34,7 @@ exports.longString = (str = '', max) => {
  * @param {string} encoded 
  * @returns {string}
  */
+/* istanbul ignore next */ 
 exports.decrypt = (encoded) => {
     if (!encoded) return ''
     const bytes = base64.decode(encoded)
@@ -57,6 +58,7 @@ exports.encrypt = (str) => {
  * check if mongo _id is valid format
  * @param {*} id
  */
+/* istanbul ignore next */ 
 exports.validID = (id) => {
     try {
         let rgx = new RegExp('^[0-9a-fA-F]{24}$')
@@ -65,8 +67,6 @@ exports.validID = (id) => {
         return false
     }
 }
-
-exports.validStatus = (status = '') => ['pending', 'completed'].indexOf(status || '') !== -1
 
 /**
  * - accepting object of messages, example: `{'001':['SimpleOrder listStore is empty',001],...}`
@@ -85,6 +85,7 @@ exports.onMessages = (messages) => {
  * Grab tokep from headers
  * @param {*} headers {}
  */
+/* istanbul ignore next */ 
 exports.getToken = (headers = {}) => {
     if (headers && headers.authorization) {
         const parted = headers.authorization.split(' ')
@@ -93,7 +94,7 @@ exports.getToken = (headers = {}) => {
     }
     return null
 }
-
+/* istanbul ignore next */ 
 exports.JWTverifyAccess = (jwt, req, token) => {
     const defer = q.defer()
     if (!token) {
@@ -118,6 +119,7 @@ exports.JWTverifyAccess = (jwt, req, token) => {
  * @param {*} url
  * @param {*} allowed
  */
+/* istanbul ignore next */ 
 exports.validate = (url, allowed) => {
     const validate = allowed.filter((val) => {
         if (url === val && val === '/') return true // for base route

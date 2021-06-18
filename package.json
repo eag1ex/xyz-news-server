@@ -12,7 +12,7 @@
     "lint": "./node_modules/.bin/eslint  --ext .js libs",
     "lint:fix": "./node_modules/.bin/eslint --fix --ext .js libs",
     "test": "mocha ./tests/{*,/*}.spec.js --colors",
-    "coverage": "nyc --reporter=html --port=2222 --reporter=text mocha ./tests/{*,/*}.spec.js --colors"
+    "coverage": "nyc --port=2222 --reporter=lcov --reporter=text-summary mocha ./tests/{*,/*}.spec.js --colors"
   },
   "engineStrict": true,
   "engines": {

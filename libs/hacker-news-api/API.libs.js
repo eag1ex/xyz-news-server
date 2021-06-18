@@ -30,10 +30,13 @@ class Libs extends HackerNewsAPI {
      * @returns {Promise< {data:APIitem[],pagedTotal:number} >}
      */
     async storiesPaged({ perPage = 15, paged = 0, value }) {
+        /* istanbul ignore next */ 
         if (!value) return Promise.reject('Must provide value for storiesPaged')
         if (!paged) paged = 0 // alwasy return first page if not set
 
+        /* istanbul ignore next */ 
         if (!perPage) perPage = this.perPageLimit
+        /* istanbul ignore next */ 
         if (perPage > this.perPageLimit) {
             perPage = this.perPageLimit
             warn('[storiesPaged]', 'paged offset to great, max is: 10')
@@ -47,7 +50,9 @@ class Libs extends HackerNewsAPI {
             try {
                 log('[fetchItem][index]', index)
                 return await this.fetch({ type: 'item', value: _value })
-            } catch (err) {
+          
+            }       
+            catch  (err) {
                 onerror('[fetchItem]', err)
                 // NOTE so it wont kill pending calls
                 return Promise.resolve(null)
@@ -66,6 +71,7 @@ class Libs extends HackerNewsAPI {
             /** @type {APIstories} */
             let pagedResults = results[paged] || []
 
+            /* istanbul ignore next */ 
             if (!pagedResults.length) {
                 let lastAvail = results.length - 1
                 return Promise.reject(`No results found for paged:${paged}, last available was paged:${lastAvail}`)
@@ -81,7 +87,9 @@ class Libs extends HackerNewsAPI {
                 let r = fetchItem(item.toString(), inx)
                 asyncResults.push(r)
             }
+            /* istanbul ignore next */ 
             if (!asyncResults.length) return { data: [], pagedTotal }
+
             return Promise.all(asyncResults)
                 .then((n) => n.filter((nn) => !!nn)
                     // sort by time                
@@ -93,7 +101,9 @@ class Libs extends HackerNewsAPI {
                 .then(n => {
                     return { data: n, pagedTotal }
                 })
-        } catch (err) {
+        } 
+ 
+        catch (err) {
             onerror('[storiesPaged]', err)
             return Promise.reject('storiesPaged error, check the service')
         }

@@ -9,7 +9,7 @@ module.exports = {
     "exclude": [
         "**/*.spec.js"
     ],
-    'temp-dir': './.nyc_output',
+    'temp-dir': './coverage',
     // all: true,
     'check-coverage': true,
     // default coverage checks

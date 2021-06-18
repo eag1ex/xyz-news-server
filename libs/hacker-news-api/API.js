@@ -33,14 +33,17 @@ class HackerNewsAPI {
      * @returns {Promise<any>}
      */
     fetch(params) {
+        /* istanbul ignore next */ 
         if (isFalsy(params)) return Promise.reject('No params supplied')
 
+        /* istanbul ignore next */ 
         if (['story', 'user', 'item'].indexOf(params.type) === -1) {
             return Promise.reject('Invalid params supplied')
         }
 
         if (params.type === 'user') {
             // example output : https://hacker-news.firebaseio.com/v0/user/jl.json?print=pretty
+             /* istanbul ignore next */ 
             if (!params.value) return Promise.reject(`No value for type:${params.type} provided`)
             let uri = url.resolve(this.base, `user/${params.value}.json`)
             let q = qstring.stringify(
@@ -56,6 +59,7 @@ class HackerNewsAPI {
         if (params.type === 'story') {
             // all available stories (top cats) have same format
             // example output : https://hacker-news.firebaseio.com/v0/topstories.json?print=pretty
+             /* istanbul ignore next */ 
             if (!params.value) return Promise.reject(`No value for type:${params.type} provided`)
 
             let uri = url.resolve(this.base, `${params.value}.json`)
@@ -72,6 +76,7 @@ class HackerNewsAPI {
             let val = Number(params.value)
             // all available stories (top cats) have same format
             // example output : https://hacker-news.firebaseio.com/v0/item/27476207.json?print=pretty
+             /* istanbul ignore next */ 
             if (val < 1) return Promise.reject(`No value for type:${params.type} provided`)
             let uri = url.resolve(this.base, `item/${params.value}.json`)
             let q = qstring.stringify(
@@ -88,11 +93,13 @@ class HackerNewsAPI {
         log('[HackerNewsAPI][fetch]', 'calling >> ', this.options.url)
 
         request(this.options, (err, res, body) => {
+             /* istanbul ignore next */ 
             if (err) {
                 onerror(err)
                 return defer.reject('hacker-news request error, or api changed')
             }
 
+            /* istanbul ignore next */ 
             if (Number(res.statusCode) >= 400) {
                 let msg = `Status error, ${res.statusCode}`
                 onerror(body || msg)

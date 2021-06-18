@@ -2,7 +2,7 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, isFalsy, isObject, isString, log, inIndex, warn } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, inIndex, warn, onerror } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
 const { longString } = require('../utils')
@@ -103,7 +103,7 @@ const htmlScrape = (url = '', id = undefined) => {
 }
 
 // NOTE example:
-// htmlScrape('https://www.chimamanda.com/',123)
+// htmlScrape('https://github.com',123)
 //     .then(n=>{
 //        log(n)
 //     }).catch(err=>{

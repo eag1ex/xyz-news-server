@@ -1,4 +1,4 @@
-;`use strict`
+`use strict`;
 
 /**
  * @typedef {import("../types").types.TReq} Req
@@ -12,6 +12,7 @@
 // asset: https://mochajs.org/
 // asset: https://www.chaijs.com/
 // asset: https://github.com/istanbuljs/nyc
+const {users, testURLS} = require('./user-test.data')
 
 const assert = require('assert')
 const chai = require('chai')
@@ -23,6 +24,7 @@ const { loggerSetting, sq } = require('x-utils-es/umd')
 
 loggerSetting('log', 'off')
 loggerSetting('warn', 'off')
+loggerSetting('onerror', 'off')
 
 const serverApp = require('../libs/server')(DEBUG)
 const should = chai.should()
@@ -86,10 +88,10 @@ describe('PASS:GET /api/stories:type', function () {
         done()
     })
 
-    it(`/api/stories/topstories?paged=2 should return 15 results`, function (done) {
+    it(`/api/stories/topstories should return 15 results`, function (done) {
         this.timeout(10000)
 
-        chaiGetRequest(serverApp.server, `/api/stories/topstories?paged=2`).then((res) => {
+        chaiGetRequest(serverApp.server, `/api/stories/topstories`).then((res) => {
             /**
              * @type {StoryResponse}
              */
@@ -97,7 +99,7 @@ describe('PASS:GET /api/stories:type', function () {
             assert.equal(body.code, 200)
             expect(body.response.length).equal(15)
             expect(res.status === 200 || res.status === 300).equal(true)
-            expect(body.paged).equal(2)
+            expect(body.paged).equal(0)
             res.should.have.status('200')
             body.response.forEach((item, inx) => {
                 expect(item).haveOwnProperty('id')
@@ -147,16 +149,6 @@ describe('PASS:GET /api/stories:type', function () {
     })
 })
 
-// at least 1 should pass and 3 should fail
-const testURLS = [
-    { value: 'https://nodejs.medium.com/introducing-undici-4-1e321243e007', inx: 0 },
-    { value: 'https://www.reddit.com/r/Windows10/comments/o1x183/the_famous_windows_31_dialogue_is_again_in/', inx: 1 },
-    { value: 'https://arstechnica.com/gadgets/2021/06/', inx: 2 },
-    { value: 'https://en.wikipedia.org/wiki/Juneteenth', inx: 3 },
-    { value: 'invalurl', inx: 4 }, // fail
-    { value: 'https://google.com/somepdf.pdf', inx: 5 }, // fail
-    { value: 'https://github.com', inx: 6 }, //  fail
-]
 
 /**
  * NOTE the result is not guaranteed, we cannot know the server is reachable
@@ -169,7 +161,8 @@ describe('PASS:GET /api/metadata (7 requests)', function () {
     })
 
     it(`/api/metadata/{url} should pass all requests`, function (done) {
-        this.timeout(25000)
+
+        this.timeout(30000)
 
         let passCount = 0 // count pass requests
         let rejectCount = 0 // count reject requests
@@ -202,22 +195,13 @@ describe('PASS:GET /api/metadata (7 requests)', function () {
 
         doLoop().then((n) => {
             expect(passCount).greaterThan(0) // results not guaranteed
-            expect(rejectCount).equal(3)
+            expect(rejectCount).equal(4)
+
             done()
         })
     })
 })
 
-// valid users, unless no longer exist
-const users = [
-    { user: 'pseudolus', inx: 1 },
-    { user: 'Black101', inx: 2 },
-    { user: 'signa11', inx: 3 },
-    { user: 'todsacerdoti', inx: 4 },
-    { user: 'pseudolus', inx: 4 },
-    // fail one user
-    { user: 'invalid234sdf34', inx: 4 },
-]
 
 describe('PASS:GET /api/user:name (2 pass/fail)', function () {
     after(function (done) {
@@ -226,7 +210,7 @@ describe('PASS:GET /api/user:name (2 pass/fail)', function () {
     })
 
     it(`/api/user:name should pass/fail all requests`, function (done) {
-        this.timeout(10000)
+        this.timeout(15000)
 
         let passCount = 0 // count pass requests
         let rejectCount = 0 // count reject requests
