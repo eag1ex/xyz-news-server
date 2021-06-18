@@ -66,10 +66,8 @@ Available server routes:
 Application stack: Express.js, REST/API, Javascript, LINT, HackerNews/API, html/scrape.
 
 
-
-#### Client
-For client app visit: `https://bitbucket.org/eag1ex/bucket-list-app-client`
-
+#### Client app
+For client app visit [xyz-news-app](https://bitbucket.org/eag1ex/xyz-news-app)
 
 
 #### Tests
