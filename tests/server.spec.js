@@ -196,7 +196,6 @@ describe('PASS:GET /api/metadata (7 requests)', function () {
         doLoop().then((n) => {
             expect(passCount).greaterThan(0) // results not guaranteed
             expect(rejectCount).equal(4)
-
             done()
         })
     })
