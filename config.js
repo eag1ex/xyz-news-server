@@ -2,7 +2,7 @@
 const port = Number(process.env.PORT || 5000)
 
 /* dynamic variable, on local change to development*/
-const env = 'development'
+const env = 'production'
 const path = require('path')
 
 module.exports = {
