@@ -2,15 +2,15 @@
  * Decided to opt-in for existing npm package
  * (source) https://www.npmjs.com/package/html-metadata
  */
-const { sq, isFalsy, isObject, isString, log, inIndex, warn } = require('x-utils-es/umd')
+const { sq, isFalsy, isObject, isString, log, inIndex, warn,matched, objectSize } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
-const { longString } = require('../utils')
+const { longString,encrypt } = require('../utils')
 
 // NOTE do not parse urls from ignore list
-const ignoreList = [/github.com/i, /.pdf/i, /.jpg/i, /.xml/i, /.json/i, /.ru/i, /.gov/i ]
+const ignoreList = [/heroku/i,/google./i,/github.com/i, /.pdf/i, /.jpg/i, /.xml/i, /.json/i, /.cn/i,/.ru/i, /.gov/i ]
 // how much text is allowed
-const strLimit = 5000
+const strLimit = 1000
 
 
 /**
@@ -20,8 +20,8 @@ const strLimit = 5000
  * @returns {Array<{name:string,value:[]| string}?>}
  */
 const formatMetadata = (obj = {}) => {
-  
-    let o = Object.entries(obj).reduce((n, [k, el], i, all) => {
+    let o = {}
+    o = Object.entries(obj).reduce((n, [k, el], i, all) => {
         if (!isObject(el)) return n
         const levelObj = Object.entries(el).reduce((nn, [kk, val]) => {
             if (isString(val) && val) {
@@ -42,6 +42,25 @@ const formatMetadata = (obj = {}) => {
         if (isFalsy(n[k])) delete n[k]
         return n
     }, {})
+
+    // NOTE {general}, {openGraph}, {jsonLd} >  [description/title] may have same content, lets limit that
+    // this is limited out of scope, we could make better dynamic implementation if needed!
+
+    if (!isFalsy(o)) {
+        if ((o.general || {}).description && (o.openGraph || {}).description) {
+            // using encrypt for better matching
+            if (matched(encrypt(o.general.description), new RegExp(encrypt(o.openGraph.description), 'gi'))) {
+                delete o.openGraph.description
+                if(!objectSize(o.openGraph)) delete o.openGraph
+            }
+        }
+        if((o.general || {}).description && (o.jsonLd || {}).description ){
+            if (matched(encrypt(o.general.description), new RegExp(encrypt(o.jsonLd.description), 'gi'))) {
+                delete o.jsonLd.description
+                if(!objectSize(o.jsonLd)) delete o.jsonLd
+            } 
+        }
+    }
 
     let list = []
     for (let key in o) {

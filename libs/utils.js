@@ -1,5 +1,5 @@
 const { reduce } = require('lodash')
-const { onerror } = require('x-utils-es/umd')
+const { onerror, isFalsy, objectSize, matched } = require('x-utils-es/umd')
 const q = require('q')
 
 const base64 = require('base-64')
@@ -19,24 +19,12 @@ exports.listRoutes = (stack, appNameRoute) => {
 }
 
 /**
- * test string is beond max allowed number
- * @param {string} str 
- * @param {number} max 
- * @returns {boolean}
- */
-exports.longString = (str = '', max) => {
-    if (!str) return false
-    if (str.split(' ').length > max) return false
-    else return true
-}
-
-/**
  * Decrypt string from btoa
  * @param {string} encoded 
  * @returns {string}
  */
 /* istanbul ignore next */ 
-exports.decrypt = (encoded) => {
+const decrypt = (encoded) => {
     if (!encoded) return ''
     const bytes = base64.decode(encoded)
     const text = utf8.decode(bytes)
@@ -48,12 +36,26 @@ exports.decrypt = (encoded) => {
  * @param {string} str 
  * @returns {string}
  */
-exports.encrypt = (str) => {
+const encrypt = (str) => {
     if (!str) return ''
     const bytes = utf8.encode(str)
     const encoded = base64.encode(bytes)
     return encoded
 }
+
+
+/**
+ * test string is beond max allowed number
+ * @param {string} str 
+ * @param {number} max 
+ * @returns {boolean}
+ */
+exports.longString = (str = '', max) => {
+    if (!str) return false
+    if (str.split(' ').length > max) return false
+    else return true
+}
+
 
 /**
  * check if mongo _id is valid format
@@ -128,3 +130,6 @@ exports.validate = (url, allowed) => {
     }).length >= 1
     return validate
 }
+
+exports.decrypt = decrypt
+exports.encrypt = encrypt
