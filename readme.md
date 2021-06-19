@@ -2,13 +2,14 @@
 An api interpretation of the existing [HackerNews/api](https://github.com/HackerNews/API), for the purpose of integration with angular/mvc XYZ News project. 
 
 Features:
-* With good separation of concerns 
-* Linted
-* Documented
-* jsDocs typed
-* Tests/coverage support
-* Error codes
-* Express sub/routing
+
+- With good separation of concerns 
+- Linted
+- Documented
+- jsDocs typed
+- Tests/coverage support
+- Error codes
+- Express sub/routing
 
 
 ### Demo
