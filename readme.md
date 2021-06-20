@@ -50,7 +50,8 @@ Available server routes:
 (GET) http://localhost:5000/api/metadata/:url # /api/metadata/aHR0cHM6Ly9hcnN0ZWNobmljYS5jb20vZ2FkZ2V0cy8yMDIxLzA2Lw== 
 
 ```
-Angular application hosted from `/xyz` when running, can cache `manifest.webmanifest` file, and if you are trying to test the `/api` it may hijack the route, so try in different browser instance, or Postman.
+
+- Angular application hosted from `/xyz` *(when running)* can cache `manifest.webmanifest` file, and if you are trying to test `/api` it may hijack the route, so try in different browser instance, or Postman.
 
 
 
