@@ -31,10 +31,9 @@ const formatMetadata = (obj = {}) => {
                 if (value.length > strLimit) {
                     value = value.substr(0, strLimit) + ' [...]'
                 }
-                
-                value = stripHTML(value)
 
-                // make it safe
+                // make it safe    
+                value = stripHTML(value)
                 let _kk = encodeURIComponent(kk || '').trim()
                 if (value && _kk && !longString(value, 1)) nn[_kk] = value
             }
