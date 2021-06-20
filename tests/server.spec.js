@@ -89,7 +89,7 @@ describe('PASS:GET /api/stories:type', function () {
     })
 
     it(`/api/stories/topstories should return 15 results`, function (done) {
-        this.timeout(10000)
+        this.timeout(15000)
 
         chaiGetRequest(serverApp.server, `/api/stories/topstories`).then((res) => {
             /**
@@ -109,7 +109,7 @@ describe('PASS:GET /api/stories:type', function () {
     })
 
     it(`/api/stories/beststories?paged=3 should return 15 results`, function (done) {
-        this.timeout(10000)
+        this.timeout(15000)
 
         chaiGetRequest(serverApp.server, `/api/stories/beststories?paged=3`).then((res) => {
             /**
@@ -129,7 +129,7 @@ describe('PASS:GET /api/stories:type', function () {
     })
 
     it(`/api/stories/newstories?paged=4 should return 15 results`, function (done) {
-        this.timeout(10000)
+        this.timeout(15000)
 
         chaiGetRequest(serverApp.server, `/api/stories/newstories?paged=4`).then((res) => {
             /**
@@ -257,7 +257,7 @@ describe('Test app route on /xyz/app/stories/new', function () {
     it(`/xyz/app/stories/new should have status: 200`, function (done) {
         this.timeout(10000)
 
-        chaiGetRequest(serverApp.server, `/xyz`).then((res) => {
+        chaiGetRequest(serverApp.server, `/xyz/app/stories/new`).then((res) => {
             res.should.have.status('200')
             done()
         })

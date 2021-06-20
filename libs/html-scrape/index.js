@@ -28,6 +28,7 @@ const formatMetadata = (obj = {}) => {
                 let value = (val || '').trim() || ''
               
                 // limit string
+                /* istanbul ignore next */ 
                 if (value.length > strLimit) {
                     value = value.substr(0, strLimit) + ' [...]'
                 }
@@ -47,6 +48,7 @@ const formatMetadata = (obj = {}) => {
     // NOTE {general}, {openGraph}, {jsonLd} >  [description/title] may have same content, lets limit that
     // this is limited out of scope, we could make better dynamic implementation if needed!
 
+     /* istanbul ignore next */  // we can implement test when this feature is fully completed
     if (!isFalsy(o)) {
         if ((o.general || {}).description && (o.openGraph || {}).description) {
             // using encrypt for better matching

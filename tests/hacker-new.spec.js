@@ -52,7 +52,7 @@ describe('Test hacker news API', function () {
     })
 
     it(`storiesPaged() / fails`, function (done) {
-        this.timeout(5000)
+        this.timeout(15000)
 
         let sync = async () => {
             try {

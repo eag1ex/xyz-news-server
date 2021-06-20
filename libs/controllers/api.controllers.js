@@ -33,6 +33,7 @@ class ServerController {
         let q = req.query
         let paged = Number(q.paged || 0)
 
+        /* istanbul ignore next */ 
         if (paged < 0) {
             return res.status(400).json(...messages['002'])
         }
@@ -66,6 +67,7 @@ class ServerController {
 
         /** @type {string} */
         const url = decrypt((req.params.url || ''))
+        /* istanbul ignore next */ 
         if (!url) {
             return res.status(400).json(...messages['003'])
         }

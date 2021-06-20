@@ -50,6 +50,8 @@ Available server routes:
 (GET) http://localhost:5000/api/metadata/:url # /api/metadata/aHR0cHM6Ly9hcnN0ZWNobmljYS5jb20vZ2FkZ2V0cy8yMDIxLzA2Lw== 
 
 ```
+Angular application hosted from `/xyz` when running, can cache `manifest.webmanifest` file, and if you are trying to test the `/api` it may hijack the route, so try in different browser instance, or Postman.
+
 
 
 #### Config
@@ -74,6 +76,8 @@ For client app visit [xyz-news-app](https://bitbucket.org/eag1ex/xyz-news-app)
 Tests provided, just run `npm run coverage`
 - last coverage report in: `./coverage/lcov-report/index.html`
 *tests depend on live api to work, if you get a fail, try extending timeout inside test files, or update `./tests/user-test.data.js` variables*
+
+
 
 
 
