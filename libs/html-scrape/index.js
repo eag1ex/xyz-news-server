@@ -5,7 +5,7 @@
 const { sq, isFalsy, isObject, isString, log, inIndex, warn,matched, objectSize } = require('x-utils-es/umd')
 const scrape = require('html-metadata')
 const request = require('request')
-const { longString,encrypt } = require('../utils')
+const { longString,encrypt,stripHTML } = require('../utils')
 
 // NOTE do not parse urls from ignore list
 const ignoreList = [/heroku/i,/google./i,/github.com/i, /.pdf/i, /.jpg/i, /.xml/i, /.json/i, /.cn/i,/.ru/i, /.gov/i ]
@@ -26,11 +26,13 @@ const formatMetadata = (obj = {}) => {
         const levelObj = Object.entries(el).reduce((nn, [kk, val]) => {
             if (isString(val) && val) {
                 let value = (val || '').trim() || ''
-  
+              
                 // limit string
                 if (value.length > strLimit) {
                     value = value.substr(0, strLimit) + ' [...]'
                 }
+                
+                value = stripHTML(value)
 
                 // make it safe
                 let _kk = encodeURIComponent(kk || '').trim()

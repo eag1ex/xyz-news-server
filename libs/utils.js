@@ -18,6 +18,10 @@ exports.listRoutes = (stack, appNameRoute) => {
     }, [])
 }
 
+exports.stripHTML = (str)=>{
+    return (str||'').replace(/(<([^>]+)>)/gi, "");
+}
+
 /**
  * Decrypt string from btoa
  * @param {string} encoded 
