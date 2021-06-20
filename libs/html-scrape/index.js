@@ -14,7 +14,7 @@ const strLimit = 1000
 
 
 /**
- * Format scraper output to nice/readable 1 level object format,
+ * Format scraper output to nice/readable 1/to 2 level object format,
  * so we can parse it to html ul/li list.
  * @param {object} obj
  * @returns {Array<{name:string,value:[]| string}?>}
