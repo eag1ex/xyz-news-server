@@ -155,11 +155,5 @@
     "cSpell.enabled":true,
     "[javascript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    },
-    "requireModuleSupport.configFile":"requirejs.config.dummy.js",
-    "requireModuleSupport.modulePath": "libs/require-js-interface/framework/scripts/megalodon",
-    "requireModuleSupport.pluginExtensions": {
-        "css": ".css",
-        "html":".html"
     }
 }
