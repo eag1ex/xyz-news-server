@@ -1,4 +1,5 @@
 Object.assign = require('object-assign')
+
 module.exports = (DEBUG = true) => {
     /**
      * @type {import("../types").types.Iconfig}
@@ -67,7 +68,7 @@ module.exports = (DEBUG = true) => {
         onerror('[xyzApp]', err)
     }
 
-    // -- add session validation to master app
+
 
     app.use('/welcome', function (req, res) {
         return res.status(200).json({ success: true, message: 'works fine', url: req.url, available_routes: listRoutes(apiRouter.stack, '/user'), status: 200 })

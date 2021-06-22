@@ -62,7 +62,7 @@ class Libs extends HackerNewsAPI {
         try {
 
             /** @type {Promise<APIstories>} */
-            let r = await this.fetch({ type: 'story', value })
+            let r = this.fetch({ type: 'story', value })
             let resp = await r
 
             let results = chunks(resp, perPage) // > [ [],[],[] ] etc

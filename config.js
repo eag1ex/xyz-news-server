@@ -11,7 +11,6 @@ module.exports = {
 
     secret: '345df45657678dgf', //<< NOTE we are NOT using JWT/session !! This is bogus i would not supply it here otherwise !!!
 
-    // to run app on local host in production, you need to rebuild it with localhost api
     // @ts-ignore
     HOST: env === 'production' ? 'https://immense-ocean-43660.herokuapp.com' : `http://localhost:${port}`,
     viewsDir: path.join(__dirname, './views'),

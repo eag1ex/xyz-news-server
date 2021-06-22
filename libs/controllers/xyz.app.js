@@ -1,5 +1,5 @@
 /**
- *  XYZ application route server via Router.app
+ *  XYZ application route
  */
 
 /**
@@ -11,7 +11,7 @@ class App {
     constructor() {}
 
     /**
-     * /xyz
+     * /xyz/*
      * render our app here
      * @param {Req} req
      * @param {Resp} res

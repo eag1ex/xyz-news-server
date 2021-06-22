@@ -24,7 +24,6 @@ module.exports = (config = null, db, mongo, jwt, DEBUG) => {
     })
 
     // app static routes
-    // TODO move xyz/api to seperate route
     // ---------- set server routes
     apiRouter.get('/stories/:type', controllers.stories.bind(controllers))
     apiRouter.get('/metadata/:url', controllers.metadata.bind(controllers))
