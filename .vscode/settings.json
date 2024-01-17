@@ -121,34 +121,17 @@
         "editor.formatOnSave": false,
         "editor.tabSize": 2,
         "editor.codeActionsOnSave": {
-            "source.fixAll.eslint": true
+            "source.fixAll.eslint": "explicit"
         }
     },
     "[scss]": {
         "editor.formatOnSave": true,
     },
     "html.format.enable": true,
-    "workbench.colorCustomizations": {
-        "activityBar.background": "#2f7c47",
-        "activityBar.foreground": "#e7e7e7",
-        "activityBar.inactiveForeground": "#e7e7e799",
-        "activityBarBadge.background": "#422c74",
-        "activityBarBadge.foreground": "#e7e7e7",
-        "titleBar.activeBackground": "#215732",
-        "titleBar.inactiveBackground": "#21573299",
-        "titleBar.activeForeground": "#e7e7e7",
-        "titleBar.inactiveForeground": "#e7e7e799",
-        "statusBar.background": "#215732",
-        "statusBarItem.hoverBackground": "#2f7c47",
-        "statusBar.foreground": "#e7e7e7"
-    },
     "editor.codeActionsOnSave": {
-        // For ESLint
-        "source.fixAll.eslint": true,
-        // For TSLint
-        "source.fixAll.tslint": false,
-        // For Stylelint
-        "source.fixAll.stylelint": true
+        "source.fixAll.eslint": "explicit",
+        "source.fixAll.tslint": "never",
+        "source.fixAll.stylelint": "explicit"
     },
     "tslint.enable": false,
     "tslint.jsEnable": false,

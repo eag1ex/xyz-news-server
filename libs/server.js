@@ -1,10 +1,12 @@
 Object.assign = require('object-assign')
 
 module.exports = (DEBUG = true) => {
+    
     /**
      * @type {import("../types").types.Iconfig}
      */
     const config = require('../config')
+
     const path = require('path')
     const session = require('./express-sess')
     const { listRoutes } = require('./utils')

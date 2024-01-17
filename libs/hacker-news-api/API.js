@@ -88,7 +88,6 @@ class HackerNewsAPI {
         }
 
         let defer = sq()
-
         log('[HackerNewsAPI][fetch]', 'calling >> ', this.options.url)
 
         request(this.options, (err, res, body) => {

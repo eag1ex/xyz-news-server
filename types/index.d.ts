@@ -62,19 +62,16 @@ declare namespace types {
     }
 
 
-    type Tenv =  'development' | 'production' | string
+    type Tenv =  'development' | 'production' 
     declare interface IRouter extends Router {}
     declare interface IJWT extends JWT{}
     declare type TReq  = Request<ParamsDictionary, any, any, qs.ParsedQs, Record<string, any>>
     declare type TResp = Response<any, Record<string, any>, number>
     declare type TExpress = Express
     
-    declare interface IExpressHandler{
-        (req:TReq,res:TResp):void
-    }
 
     declare interface Iconfig {
-        env?: Tenv;
+        env?: Tenv | string;
         HOST:string;
         port:number;
         secret:string
